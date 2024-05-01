@@ -105,7 +105,7 @@
             window.location.replace(url);
         } else {
             const upi = upiId ? upiId : `paytmqr281005050101jnirp1ueoe1y@paytm`;
-            url = `upi://pay?pa=${upi}&mode=02&tn=${userName.replace(/\s/g, "")}&mam=15&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
+            url = `upi://pay?pa=${upi}&mode=02&tn=${userName.replace(/\s/g, "")}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
             generateQRCode(url)
         }
         const openProtocolButton = document.getElementById("openProtocolButton");
