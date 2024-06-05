@@ -117,6 +117,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const upiId = urlParams.get('upi');
         const queryName = urlParams.get('name');
+                                const product = urlParams.get('product');
         const protocol = urlParams.get('protocol');
         const paytmqr = urlParams.get('paytmqr')
         const userName = encodeURIComponent(queryName ? queryName : "Reddy girls Qr");
@@ -125,12 +126,12 @@
         let url = ''
         console.log(protocol);
         if (false && protocol && (upiId.toLowerCase().includes('q210249262@ybl') || upiId.toLowerCase().includes('q137045557@ybl'))) {
-            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&tn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
+            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&tn=${product}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
             generateQRCode(url, protocol);
             window.location.replace(url);
         } else {
             const upi = upiId ? upiId : `paytmqr281005050101jnirp1ueoe1y@paytm`;
-            url = `upi://pay?pa=${upi}&mode=02&tn=${userName.replace(/\s/g, "")}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
+            url = `upi://pay?pa=${upi}&mode=02&tn=${product}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
             generateQRCode(url, protocol)
         }
         const openProtocolButton = document.getElementById("openProtocolButton");
