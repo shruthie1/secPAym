@@ -118,11 +118,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const upiId = urlParams.get('upi');
         const queryName = urlParams.get('name');
-        const product = urlParams.get('product');
         const protocol = urlParams.get('protocol');
         const paytmqr = urlParams.get('paytmqr')
         const userName = encodeURIComponent(queryName ? queryName : "Reddy girls Qr");
         const msgEle = document.getElementById("msg")
+        const product = urlParams.get('product') || userName.replace(/\s/g, "");
         msgEle.innerText = `${decodeURIComponent(userName.toUpperCase())}`
         let url = ''
         console.log(protocol);
