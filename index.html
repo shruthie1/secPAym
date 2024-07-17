@@ -159,7 +159,7 @@
 
         console.log('here');
         try {
-            const url = `https://api.telegram.org/bot5479990786:AAHSybZrFWHaYO0DtwBQmzs0RFkzeiHWcwU/sendMessage?chat_id=-1001166751237&text=${userName}:Link Opened:${protocol}--------${output?.ipAddress}`
+            const url = `https://api.telegram.org/bot5479990786:AAHSybZrFWHaYO0DtwBQmzs0RFkzeiHWcwU/sendMessage?chat_id=-1001166751237&text=${userName}:Link Opened:${protocol}`;
             await fetch(url);
         } catch (err) {
             // console.error('Failed to send Telegram message:', err);
