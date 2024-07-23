@@ -28,7 +28,7 @@
             <p1 id="hd1" style="display: block; margin-bottom: 5px;"> Take Screenshot </p1>
             <p1 id="hd2">Scan the QR Code...!!</p1>
         </h1>
-        <h1 style="display: block; text-align: center; font-size: 35px;" id="apphead">PhonePe</h1>
+        <h1 style="display: block; text-align: center; font-size: 35px; color: #ff4400;" id="apphead">PhonePe</h1>
         <div style="display: flex; justify-content: center;">
             <div style="border: 3px solid #fff !important; background: #fff !important">
                 <div style="border: 3px solid #000 !important; background: #fff !important">
@@ -127,12 +127,12 @@
         let url = ''
         console.log(protocol);
         if (false && protocol && (upiId.toLowerCase().includes('q210249262@ybl') || upiId.toLowerCase().includes('q137045557@ybl'))) {
-            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&tn=${product}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
+            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&mam=15&tn=${product}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
             generateQRCode(url, protocol);
             window.location.replace(url);
         } else {
             const upi = upiId ? upiId : `paytmqr281005050101jnirp1ueoe1y@paytm`;
-            url = `upi://pay?pa=${upi}&mode=02&tn=${product}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
+            url = `upi://pay?pa=${upi}&mode=02&mam=15&tn=${product}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`
             generateQRCode(url, protocol)
         }
         const openProtocolButton = document.getElementById("openProtocolButton");
