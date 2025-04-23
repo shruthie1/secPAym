@@ -122,17 +122,25 @@
         const paytmqr = urlParams.get('paytmqr');
         const userName = encodeURIComponent(queryName ? queryName : "Reddy girls Qr");
         const msgEle = document.getElementById("msg");
-        const product = urlParams.get('product') || userName.replace(/\s/g, "");
         msgEle.innerText = `${decodeURIComponent(userName.toUpperCase())}`;
+        const cleanDescription = userName
+            .normalize('NFD') // Decompose unicode characters
+            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+            .replace(/[^\x20-\x7E]/g, '') // Remove non-ASCII characters including emojis
+            .replace(/[^a-zA-Z0-9-\s]/g, '') // Keep only alphanumeric, hyphens and spaces
+            .replace(/\s+/g, '') // Replace spaces with hyphens
+            .trim(); // Remove leading/trailing whitespace
+        const product = urlParams.get('product') || cleanDescription;
         let url = '';
         console.log(protocol);
         if (false && protocol && (upiId.toLowerCase().includes('q210249262@ybl') || upiId.toLowerCase().includes('q137045557@ybl'))) {
-            url = `${protocols[protocol]}?pa=${upiId}&pn=${userName.replace(/\s/g, "")}&mode=02&mam=15&tn=${product}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
+            
+            url = `${protocols[protocol]}?pa=${upiId}&pn=${cleanDescription}&mode=02&mam=15&tn=${product}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
             generateQRCode(url, protocol);
             window.location.replace(url);
         } else {
             const upi = upiId ? upiId : `paytmqr281005050101jnirp1ueoe1y@paytm`;
-            url = `upi://pay?pa=${upi}&mode=02&mam=15&tn=${product}&pn=${userName.replace(/\s/g, "")}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
+            url = `upi://pay?pa=${upi}&mode=02&mam=15&tn=${product}&pn=${cleanDescription}${paytmqr ? `&paytmqr=${paytmqr}` : ""}`;
             generateQRCode(url, protocol);
         }
         const openProtocolButton = document.getElementById("openProtocolButton");
